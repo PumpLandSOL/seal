@@ -1,0 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Michroma&family=Sora:wght@300;400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#07070a;color:#f1f0f6;font-family:'Sora',sans-serif;font-weight:300;overflow:hidden;position:relative}
+.amb{position:absolute;inset:-20%;filter:blur(120px);opacity:.45;background:radial-gradient(38% 34% at 22% 30%,#9d7bff,transparent 70%),radial-gradient(30% 30% at 78% 22%,#7df9e1,transparent 70%),radial-gradient(34% 36% at 62% 84%,#ff7bd5,transparent 70%)}
+.scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,#ffffff06 0 1px,transparent 1px 4px)}
+.mi{font-family:'Michroma';text-transform:uppercase;font-weight:400}
+.iri{background:linear-gradient(100deg,#7df9e1,#9d7bff 50%,#ff7bd5);-webkit-background-clip:text;background-clip:text;color:transparent}
+.abs{position:absolute}

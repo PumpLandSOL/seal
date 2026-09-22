@@ -1,0 +1,37 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SEAL — verify a receipt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0a09;--card:#141210;--edge:#2a2622;--ink:#f3ede4;--dim:#a39a8c;--mu:#6b635a;--cu:#d9955a;--cu2:#f0c08a;--ok:#8fd6a4;--red:#e5705f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:'Instrument Sans',sans-serif;font-size:15px;line-height:1.55}
+.wrap{max-width:640px;margin:0 auto;padding:70px 20px}
+.eye{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--cu)}
+h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:44px;line-height:1.05;margin:14px 0 10px}h1 em{color:var(--cu2)}
+.sub{color:var(--dim);margin-bottom:28px}
+.env{background:var(--card);border:1px solid var(--edge);padding:28px;position:relative}
+.env::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,var(--cu),transparent)}
+.kv{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--edge)}.kv:last-child{border:none}
+.kv span{color:var(--dim)}.kv b{font-weight:500;text-align:right;word-break:break-all}
+.wax{display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;padding:8px 14px;border:1px solid var(--cu);color:var(--cu2);margin-bottom:16px}
+.wax::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--cu);box-shadow:0 0 12px var(--cu)}
+.bad{border-color:var(--red);color:var(--red)}.bad::before{background:var(--red);box-shadow:none}
+.big{font-family:'Instrument Serif',serif;font-size:36px}
+.foot{margin-top:24px;font-size:13px;color:var(--mu)}a{color:var(--cu2)}
+</style></head><body><div class="wrap">
+  <div class="eye">SEAL · sealed receipt</div>
+  <h1>Proof that a payment <em>happened.</em></h1>
+  <div class="sub">A sealed receipt carries an id, an amount, a time and a signature. It carries no sender and no recipient. If the signature verifies, the payment is real.</div>
+  <div id="out" class="env">checking the seal…</div>
+  <div class="foot">Receipts are signed by the SEAL ledger. Whoever holds this link can confirm the payment without learning who paid or who was paid. <a href="/">sealmoneyrh.xyz</a></div>
+</div>
+<script>
+(async () => {
+  const out = document.getElementById('out'); const h = (location.hash || '').slice(1); const [id, sig] = h.split('.');
+  if (!id || !sig) { out.innerHTML = '<div class="wax bad">no receipt in the link</div>'; return; }
+  const r = await fetch('/api/receipt/verify', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id, sig }) }).then((x) => x.json());
+  if (r.error || r.ok === false) { out.innerHTML = '<div class="wax bad">seal does not verify</div><div class="kv"><span>receipt</span><b>' + id + '</b></div>'; return; }
+  const f = (n) => (+n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  out.innerHTML = '<div class="wax">seal verified · HMAC-SHA256</div><div class="kv"><span>amount</span><b class="big">' + f(r.amt) + ' sUSD</b></div><div class="kv"><span>kind</span><b>' + r.kind + '</b></div><div class="kv"><span>paid at</span><b>' + new Date(r.ts).toUTCString() + '</b></div><div class="kv"><span>receipt</span><b>' + id + '</b></div><div class="kv"><span>sender</span><b>not disclosed</b></div><div class="kv"><span>recipient</span><b>not disclosed</b></div>';
+})();
+</script></body></html>
