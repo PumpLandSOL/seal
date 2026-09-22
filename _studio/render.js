@@ -13,8 +13,12 @@ const DESKTOP = require('path').join(__dirname, '..', 'brand'); require('fs').mk
 const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 
 const SIZES = {
-  'hush-pfp': [2000, 2000],
-  'hush-banner': [3000, 1000],
+  'seal-pfp': [2000, 2000],
+  'seal-banner': [3000, 1000],
+  'seal-keyart': [2400, 1350],
+  'seal-howitworks': [2400, 1350],
+  'seal-receipt': [2400, 1350],
+  'seal-features': [2400, 1350],
   'hush-keyart': [2400, 1350],
   'hush-howitworks': [2400, 1350],
   'hush-features': [2400, 1350],
