@@ -122,9 +122,9 @@ function renderPanel() {
     p.innerHTML = `<div class="note"><b>Streams.</b> Schedule sealed payments: X sUSD to one address, every period, N times. Each payment is a sealed send with a signed receipt. The recipient never appears on the ledger. 30 bps per payment.</div>
       <div class="field"><input id="to" placeholder="recipient Robinhood Chain address…" spellcheck="false"></div>
       <div class="field"><input id="label" placeholder="label, seen only by both of you (optional)" maxlength="40"></div>
-      <div style="display:flex;gap:8px"><div class="field" style="flex:1.2"><input id="in" type="number" placeholder="amount per payment" min="1"><span class="u">sUSD</span></div>
-      <div class="field" style="flex:.8"><input id="n" type="number" placeholder="payments" min="1" max="${P ? P.maxN : 520}"><span class="u">×</span></div>
-      <div class="field" style="flex:1"><select id="period">${(P ? P.periods : ['day']).map((x) => '<option value="' + x + '"' + (x === 'month' ? ' selected' : '') + '>every ' + x + '</option>').join('')}</select></div></div>
+      <div style="display:flex;gap:8px"><div class="field" style="flex:1"><input id="in" type="number" placeholder="amount" min="1"><span class="u">sUSD</span></div>
+      <div class="field" style="flex:.7"><input id="n" type="number" placeholder="count" min="1" max="${P ? P.maxN : 520}"></div></div>
+      <div class="field"><select id="period">${(P ? P.periods : ['day']).map((x) => '<option value="' + x + '"' + (x === 'month' ? ' selected' : '') + '>every ' + x + '</option>').join('')}</select></div></div>
       <div class="kv"><span>Sealed balance</span><b>${A ? (reveal ? fmt(A.priv, 2) : '<span class="redact">0000</span>') : '—'}</b></div><div class="kv"><span>total committed</span><b id="o1">—</b></div>
       <button class="btn fill wide" id="act" style="margin-top:14px">Start stream</button>
       ${mine.length ? '<div style="margin-top:16px">' + mine.map((q) => `<div class="pos"><b>${q.label || 'stream'}</b><span>${fmt(q.amt, 2)} sUSD · every ${q.period}</span><span class="sg">${q.paid}/${q.n} paid · ${q.status}${q.status === 'live' ? ' · next ' + dur(Math.max(0, q.next - Date.now())) : ''}</span>${q.status === 'live' ? '<button data-cancel="' + q.id + '">Cancel</button>' : q.status === 'paused' ? '<button data-resume="' + q.id + '">Resume</button>' : ''}</div>`).join('') + '</div>' : ''}`;
